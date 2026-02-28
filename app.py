@@ -27,6 +27,7 @@ def check_password():
         pwd = st.text_input("Contraseña:", type="password")
         submitted = st.form_submit_button("Ingresar al Monitor")
         
+        # Procesa la clave
         if submitted:
             if pwd == st.secrets["auth"]["password"]:
                 st.session_state["password_correct"] = True
@@ -62,12 +63,12 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("🎯 Configurar Metas por Hora")
 with st.sidebar.expander("Ajustar metas actuales", expanded=False):
     st.caption("Modifica estos valores para recalcular las métricas y gráficas.")
-    meta_atlanta1 = st.number_input("Atlanta 1", value=100, step=10)
-    meta_atlanta2 = st.number_input("Atlanta 2", value=100, step=10)
-    meta_litro = st.number_input("Litro", value=100, step=10)
-    meta_vertical1 = st.number_input("Vertical 1", value=100, step=10)
-    meta_vertical2 = st.number_input("Vertical 2", value=100, step=10)
-    meta_vertical3 = st.number_input("Vertical 3", value=100, step=10)
+    meta_atlanta1 = st.number_input("Atlanta 1", value=1200, step=10)
+    meta_atlanta2 = st.number_input("Atlanta 2", value=1700, step=10)
+    meta_litro = st.number_input("Litro", value=800, step=10)
+    meta_vertical1 = st.number_input("Vertical 1", value=1400, step=10)
+    meta_vertical2 = st.number_input("Vertical 2", value=1400, step=10)
+    meta_vertical3 = st.number_input("Vertical 3", value=1400, step=10)
 
 METAS_POR_LINEA = {
     "Atlanta 1": meta_atlanta1,
@@ -79,7 +80,7 @@ METAS_POR_LINEA = {
 }
 
 # --- FUNCIÓN PARA OBTENER DATOS (ÚLTIMOS 7 DÍAS REALES) ---
-@st.cache_data(ttl=60) # Refresca el caché en 60 segundos por si las dudas
+@st.cache_data(ttl=60) # Refresca el caché en 60 segundos
 def obtener_datos_crudos(planta):
     query = f"""
     SELECT 
@@ -218,8 +219,8 @@ total_meta = df_24h["Meta por Hora"].sum()
 total_perdida = df_24h["Tiempo Perdido (min)"].sum()
 eficiencia = (total_real / total_meta * 100) if total_meta > 0 else 0
 
-col1.metric("Producción Total", f"{total_real:,.0f}")
-col2.metric("Meta Acumulada", f"{total_meta:,.0f}")
+col1.metric("Producción Total", f"{total_real:,.0f} unid")
+col2.metric("Meta Acumulada", f"{total_meta:,.0f} unid")
 col3.metric("Tiempo Total de Paro", f"{total_perdida:,.0f} min", delta="- Inactividad", delta_color="inverse")
 col4.metric("Eficiencia (OEE aprox)", f"{eficiencia:.1f}%", f"{eficiencia - 100:.1f}%")
 
