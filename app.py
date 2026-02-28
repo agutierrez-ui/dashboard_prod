@@ -57,6 +57,7 @@ except Exception as e:
 # --- BARRA LATERAL (MENÚ Y CONFIGURACIÓN) ---
 st.sidebar.title("⚙️ Controles")
 planta_seleccionada = st.sidebar.radio("Sede:", ["Sopó"])
+# planta_seleccionada = st.sidebar.radio("Sede:", ["Sopó", "Entrerríos"])
 
 # --- METAS ---
 st.sidebar.markdown("---")
